@@ -60,6 +60,8 @@ module Sinatra
 
         @ignored = Array.new
 
+        @mount_point = ''
+
         reset!
 
         # Defaults!
@@ -150,6 +152,8 @@ module Sinatra
       attr_reader   :served     # Hash, paths to be served.
                                 # Key is URI path, value is local path
 
+      attr_reader   :mount_point # URI path where the app is mounted
+
       attrib :js_compression    # Symbol, compression method for JS
       attrib :css_compression   # Symbol, compression method for CSS
       attrib :output_path       # '/public'
@@ -160,6 +164,10 @@ module Sinatra
       attrib :prebuild          # Bool
 
       attrib :host # String
+
+      def mount_point=(path)
+        @mount_point = path.squeeze('/').chomp('/')
+      end
 
       def js_compression(name=nil, options=nil)
         @js_compression = name  unless name.nil?
@@ -234,6 +242,10 @@ module Sinatra
 
           path  if File.exists?(path)
         end
+      end
+
+      def mounted_path_for(path)
+        "#{@mount_point}/#{path}".squeeze('/')
       end
 
       # Returns the local file for a given URI path. (for dynamic files)

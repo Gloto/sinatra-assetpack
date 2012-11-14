@@ -106,9 +106,9 @@ module Sinatra
     private
       def link_tag(file, options={}, production_host = false)
         if js?
-          "<script src='#{@assets.production_host if production_host}#{e file}'#{kv options}></script>"
+          "<script src='#{@assets.production_host if production_host}#{@assets.mount_point}#{e file}'#{kv options}></script>"
         elsif css?
-          "<link rel='stylesheet' href='#{@assets.production_host if production_host}#{e file}'#{kv options} />"
+          "<link rel='stylesheet' href='#{@assets.production_host if production_host}#{@assets.mount_point}#{e file}'#{kv options} />"
         end
       end
     end
