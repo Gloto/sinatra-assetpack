@@ -282,7 +282,7 @@ module Sinatra
           # A buncha tuples
           tuples = @served.map { |prefix, local_path|
             path = File.expand_path(File.join(@app.root, local_path))
-            spec = File.join(path, '**', '*')
+            spec = File.join(path, '**{,', '*', '**}', '*')
 
             Dir[spec].map { |f|
               [ to_uri(f, prefix, path), f ]  unless File.directory?(f)
@@ -302,7 +302,6 @@ module Sinatra
       # wildcards that don't match anything.
       #
       def glob(match, options={})
-
         match = [*match]  # Force array-ness
 
         paths = match.map { |spec|
